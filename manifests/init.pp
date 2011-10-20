@@ -35,6 +35,8 @@ class ntp($servers="UNSET",
           $autoupdate=false
 ) {
 
+  $module_name="puppetlabs-ntp"
+
   if ! ($ensure in [ "running", "stopped" ]) {
     fail("ensure parameter must be running or stopped")
   }
@@ -63,7 +65,7 @@ class ntp($servers="UNSET",
         $servers_real = $servers
       }
     }
-    centos, redhat, oel: {
+    centos, redhat, oel, scientific: {
       $supported  = true
       $pkg_name   = [ "ntp" ]
       $svc_name   = "ntpd"
@@ -86,7 +88,6 @@ class ntp($servers="UNSET",
   }
 
   if ($supported == true) {
-
     package { $pkg_name:
       ensure => $package_ensure,
     }
